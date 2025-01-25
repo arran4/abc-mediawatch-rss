@@ -4,7 +4,7 @@ import (
 	"encoding/xml"
 	"flag"
 	"fmt"
-	"github.com/arran4/abc-kohler-report-rss"
+	"github.com/arran4/abc-mediawatch-rss"
 	"io"
 	"log"
 	"os"

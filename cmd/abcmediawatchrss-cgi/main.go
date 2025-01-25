@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/xml"
 	"fmt"
-	"github.com/arran4/abc-kohler-report-rss"
+	"github.com/arran4/abc-mediawatch-rss"
 	"log"
 	"net/http"
 	"net/http/cgi"
