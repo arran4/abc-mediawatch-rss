@@ -185,15 +185,15 @@ server {
 Download binaries from: https://github.com/arran4/abc-mediawatch-rss/releases
 
 ### Homebrew
-brew tap arran4/homebrew-tap
-brew install abcmediawatchrss
+    brew tap arran4/homebrew-tap
+    brew install abcmediawatchrss
 
 ### Docker
-docker pull ghcr.io/arran4/abc-mediawatch-rss:latest
-docker run --rm ghcr.io/arran4/abc-mediawatch-rss:latest --help
+    docker pull ghcr.io/arran4/abc-mediawatch-rss:latest
+    docker run --rm ghcr.io/arran4/abc-mediawatch-rss:latest --help
 
 ### Go install
-go install github.com/arran4/abc-mediawatch-rss/cmd/abcmediawatchrss@latest
+    go install github.com/arran4/abc-mediawatch-rss/cmd/abcmediawatchrss@latest
 
 ### Native packages
 - Debian/Ubuntu (`.deb`): see Releases assets

@@ -1,6 +1,3 @@
-# Agent rules for generation:
-# https://arran4.github.io/blog/post/2026/006-github-ci-and-deploy/
-# Built using this post as a reference/guide.
 name: CI/CD
 
 on:
@@ -294,6 +291,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high
 
   golangci:
     name: lint
