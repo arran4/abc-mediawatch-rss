@@ -499,11 +499,13 @@ jobs:
 
           discussion_arg="--discussion-category Announcements"
 
-          if [[ -n "$prerelease" ]]; then
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG already exists, skipping creation."
+          elif [[ -n "$prerelease" ]]; then
             gh release create "$TAG" --generate-notes $prerelease || true
           else
             gh release create "$TAG" --generate-notes $discussion_arg || \
-              gh release create "$TAG" --generate-notes
+              gh release create "$TAG" --generate-notes || true
           fi
 
   publish-draft:
