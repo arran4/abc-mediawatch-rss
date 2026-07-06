@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
+	"os"
 
 	"github.com/gomarkdown/markdown"
 	"github.com/gomarkdown/markdown/html"
@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	md, err := ioutil.ReadFile("readme.md")
+	md, err := os.ReadFile("readme.md")
 	if err != nil {
 		log.Fatalf("Error reading file: %v", err)
 	}
@@ -25,7 +25,7 @@ func main() {
 	renderer := html.NewRenderer(opts)
 	htmlOutput := markdown.Render(doc, renderer)
 
-	fullHtml := fmt.Sprintf(`<!DOCTYPE html>
+	fullHTML := fmt.Sprintf(`<!DOCTYPE html>
 <html>
 <head>
 <title>ABC Mediawatch RSS</title>
@@ -36,7 +36,7 @@ func main() {
 </body>
 </html>`, htmlOutput)
 
-	err = ioutil.WriteFile("public/index.html", []byte(fullHtml), 0644)
+	err = os.WriteFile("public/index.html", []byte(fullHTML), 0644)
 	if err != nil {
 		log.Fatalf("Error writing file: %v", err)
 	}
