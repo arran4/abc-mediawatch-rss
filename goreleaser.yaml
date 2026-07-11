@@ -29,9 +29,6 @@ archives:
     builds:
       - abcmediawatchrss-cgi
     name_template: '{{ .ProjectName }}-cgi_{{ .Version }}_{{ .Os }}_{{ .Arch }}'
-    format_overrides:
-      - goos: windows
-        formats: ["none"]
 checksum:
   name_template: 'checksums.txt'
 snapshot:
