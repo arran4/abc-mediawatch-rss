@@ -43,10 +43,8 @@ on:
         default: true
         type: boolean
   schedule:
-    # preferred heavy monthly run (quota reset strategy)
-  - cron: '17 3 1 * *'
-    # optional nightly lightweight checks
-  - cron: '41 2 * * *'
+    # 8:30 PM AEST is 10:30 AM UTC, plus an hour is 11:30 AM UTC. Mediawatch is mondays
+    - cron: '30 11 * * 1'
 
 concurrency:
   # Keep this as a safety net, not the primary dedupe mechanism.
