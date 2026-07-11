@@ -7,24 +7,32 @@ builds:
     dir: cmd/abcmediawatchrss
     env:
       - CGO_ENABLED=0
-#  -
-#    id: "abcmediawatchrss-cgi"
-#    binary: "abcmediawatchrss-cgi"
-#    dir: cmd/abcmediawatchrss-cgi
-#    env:
-#      - CGO_ENABLED=0
-#    goos: [linux]
-#    goarch: [amd64, arm64]
-#    flags: ["-tags=netgo", "-trimpath"]
+  -
+    id: "abcmediawatchrss-cgi"
+    binary: "abcmediawatchrss-cgi"
+    dir: cmd/abcmediawatchrss-cgi
+    env:
+      - CGO_ENABLED=0
+    goos: [linux]
+    goarch: [amd64, arm64]
+    flags: ["-tags=netgo", "-trimpath"]
 archives:
   -
+    id: default
+    builds:
+      - abcmediawatchrss
     format_overrides:
       - goos: windows
-        format: zip
+        formats: ["zip"]
+  -
+    id: cgi
+    builds:
+      - abcmediawatchrss-cgi
+    name_template: '{{ .ProjectName }}-cgi_{{ .Version }}_{{ .Os }}_{{ .Arch }}'
 checksum:
   name_template: 'checksums.txt'
 snapshot:
-  name_template: "{{ .Tag }}-next"
+  version_template: "{{ .Tag }}-next"
 changelog:
   sort: asc
   filters:
