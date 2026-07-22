@@ -8,7 +8,7 @@ This application scrapes the "Mediawatch" section of ABC News and generates an R
 ## Installation
 
 ### Prerequisites
-- **Go 1.24+** (if building from source)
+- **Go 1.25+** (if building from source)
 
 #### Optional
 - **Apache or Nginx** (for serving RSS files)
@@ -19,7 +19,7 @@ This application scrapes the "Mediawatch" section of ABC News and generates an R
 Grab the latest binary here: https://github.com/arran4/abc-mediawatch-rss/releases/
 
 #### Install and build as user (User)
-1. Install Go 1.24+
+1. Install Go 1.25+
 2. Run `go install`:
 
 ```bash
