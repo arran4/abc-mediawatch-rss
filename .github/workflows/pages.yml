@@ -7,6 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: read
   contents: read
   pages: write
   id-token: write
@@ -21,6 +22,10 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    env:
+      # A job rerun shares its run ID with earlier attempts, but not its attempt.
+      # An attempt-specific name avoids ambiguous duplicate Pages artifacts.
+      PAGES_ARTIFACT_NAME: github-pages-${{ github.run_attempt }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -45,8 +50,42 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
+          name: ${{ env.PAGES_ARTIFACT_NAME }}
           path: './public'
+
+      - name: Wait for artifact discovery
+        # The Pages deployment API can briefly return zero artifacts immediately
+        # after upload succeeds. Wait until the artifact is indexed before deploy.
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for attempt in {1..12}; do
+            if count="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/artifacts?per_page=100" \
+              | jq -r --arg name "$PAGES_ARTIFACT_NAME" '[.artifacts[] | select(.name == $name and .expired == false)] | length')"; then
+              case "$count" in
+                1)
+                  echo "Pages artifact $PAGES_ARTIFACT_NAME is discoverable"
+                  exit 0
+                  ;;
+                0)
+                  echo "Pages artifact not indexed yet (attempt $attempt/12)"
+                  ;;
+                *)
+                  echo "::error::Expected exactly one artifact named $PAGES_ARTIFACT_NAME; found $count"
+                  exit 1
+                  ;;
+              esac
+            else
+              echo "Artifact API query failed (attempt $attempt/12); retrying"
+            fi
+            sleep 5
+          done
+          echo "::error::Pages artifact $PAGES_ARTIFACT_NAME was not discoverable after 12 checks"
+          exit 1
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: ${{ env.PAGES_ARTIFACT_NAME }}
